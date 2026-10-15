@@ -1,0 +1,38 @@
+# generic tests for models, columns
+# run dbt test command to verify
+models:
+  - name: stg_jaffle_shop__customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_jaffle_shop__orders
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+      - name: status
+        data_tests:
+          - accepted_values:
+              # arguments is provide specific condition need to be check
+              # normally pair with config which can define the test severity and filter record
+              arguments:
+                values: 
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
+                  - return_pending
+      - name: customer_id
+        data_tests:
+          - relationships:
+              # check Referential Integrity, check each customer_id in stg_jaffle_shop__orders model have corresponded record in stg_jaffle_shop__customers table
+              arguments:
+                to: ref('stg_jaffle_shop__customers')
+                field: customer_id
+
+          
+          
