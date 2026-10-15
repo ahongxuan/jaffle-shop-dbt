@@ -8,13 +8,13 @@ payment as (
 
 order_payments as (
     select 
-        p.orderid as order_id, 
+        p.order_id as order_id, 
         o.customer_id as customer_id, 
         sum(amount) as amount
 
     from orders o
     left join payment p
-        on p.orderid = o.order_id
+        on p.order_id = o.order_id
     group by 1,2
 )
 

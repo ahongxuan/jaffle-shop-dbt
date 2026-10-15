@@ -1,0 +1,25 @@
+# generic tests for models, columns
+# run dbt test command to verify
+models:
+  - name: stg_stripe__payments
+    columns:
+      - name: payment_id
+        data_tests:
+          - unique
+          - not_null
+      - name: payment_method
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: 
+                  - bank_transfer
+                  - coupon
+                  - credit_card
+                  - gift_card
+
+      - name: amount
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
