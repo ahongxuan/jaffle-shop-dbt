@@ -1,10 +1,19 @@
 # configuration for jaffle_shop folder
+# test raw data 
 sources:
   - name: jaffle_shop
     database: jaffle_raw
     schema: jaffle_shop
     tables:
       - name: customers 
+        columns:
+          - name: id
+            description: primary key
+            data_tests:
+              - unique
+              - not_null
+              
+
       - name: orders
         config:
           freshness:
