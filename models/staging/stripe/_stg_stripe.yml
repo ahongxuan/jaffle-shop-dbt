@@ -2,12 +2,14 @@
 # run dbt test command to verify
 models:
   - name: stg_stripe__payments
+    description: One payment per row
     columns:
       - name: payment_id
         data_tests:
           - unique
           - not_null
       - name: payment_method
+        description: "{{ doc('payment_method') }}"
         data_tests:
           - accepted_values:
               arguments:
@@ -18,6 +20,7 @@ models:
                   - gift_card
 
       - name: amount
+        description: "{{ doc('payment_amount')}}"
         data_tests:
           - not_null
           - dbt_utils.expression_is_true:
